@@ -1,0 +1,6 @@
+﻿[ClassVersion("1.0.0"), FriendlyName("rsNetAdapter")]
+class RS_rsNetAdapter : OMI_BaseResource
+{
+    [key] string InterfaceDescription;
+    [write] string Name;
+};
