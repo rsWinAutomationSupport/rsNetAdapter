@@ -58,7 +58,7 @@ Function Test-TargetResource {
    }
 }
 
-Function Set-TargetResouce {
+Function Set-TargetResource {
    param (
       [Parameter(Mandatory = $true)][ValidateNotNullOrEmpty()][string]$InterfaceDescription,
       [string]$Name
