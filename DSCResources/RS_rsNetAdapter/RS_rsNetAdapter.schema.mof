@@ -3,4 +3,5 @@ class RS_rsNetAdapter : OMI_BaseResource
 {
     [key] string InterfaceDescription;
     [write] string Name;
+    [write] boolean Logging;
 };

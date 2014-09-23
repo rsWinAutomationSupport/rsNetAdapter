@@ -3,19 +3,22 @@
 Function Get-TargetResource {
    param (
       [Parameter(Mandatory = $true)][ValidateNotNullOrEmpty()][string]$InterfaceDescription,
-      [string]$Name
+      [string]$Name,
+      [bool]$Logging
    )
    if((Get-NetAdapter | ? InterfaceDescription -eq $InterfaceDescription)) { $InterfaceDescription = $InterfaceDescription } else { $InterfaceDescription = "Interface not found" }
    @{
   InterfaceDescription = $InterfaceDescription
   Name = (Get-NetAdapter | ? InterfaceDescription -eq $InterfaceDescription).Name
+  Logging = $Logging
   }
 }
 
 Function Test-TargetResource {
    param (
       [Parameter(Mandatory = $true)][ValidateNotNullOrEmpty()][string]$InterfaceDescription,
-      [string]$Name
+      [string]$Name,
+      [bool]$Logging
    )
    . "C:\cloud-automation\secrets.ps1"
    $logSource = $PSCmdlet.MyInvocation.MyCommand.ModuleName
@@ -37,7 +40,9 @@ Function Test-TargetResource {
       $isRackconnected = $false
    }
    if($isRackconnected = $true) { 
-      Write-EventLog -LogName DevOps -Source $logSource -EntryType Information -EventId 1000 -Message "Test-TargetResource: Server is Rackconnect v2"
+      if($Logging) {
+         Write-EventLog -LogName DevOps -Source $logSource -EntryType Information -EventId 1000 -Message "Test-TargetResource: Server is Rackconnect v2"
+      }
       if($InterfaceDescription = "Citrix PV Network Adapter #0") {
          $nicName = "Unused" 
       }
@@ -49,11 +54,15 @@ Function Test-TargetResource {
       $nicName = $Name 
    } 
    if((Get-NetAdapter | ? InterfaceDescription -eq $InterfaceDescription).Name -eq $nicName) {
-      Write-EventLog -LogName DevOps -Source $logSource -EntryType Information -EventId 1000 -Message "$InterfaceDescription is properly named with $nicName"
+      if($Logging) {
+         Write-EventLog -LogName DevOps -Source $logSource -EntryType Information -EventId 1000 -Message "$InterfaceDescription is properly named with $nicName"
+      }
       return $true
    }
    else {
-      Write-EventLog -LogName DevOps -Source $logSource -EntryType Information -EventId 1000 -Message "$InterfaceDescription is not properly named with $nicName"
+      if($Logging) {
+         Write-EventLog -LogName DevOps -Source $logSource -EntryType Information -EventId 1000 -Message "$InterfaceDescription is not properly named with $nicName"
+      }
       return $false
    }
 }
@@ -61,7 +70,8 @@ Function Test-TargetResource {
 Function Set-TargetResource {
    param (
       [Parameter(Mandatory = $true)][ValidateNotNullOrEmpty()][string]$InterfaceDescription,
-      [string]$Name
+      [string]$Name,
+      [bool]$Logging
    )
    . "C:\cloud-automation\secrets.ps1"
    $logSource = $PSCmdlet.MyInvocation.MyCommand.ModuleName
@@ -83,21 +93,29 @@ Function Set-TargetResource {
       $isRackconnected = $false
    }
    if($isRackconnected = $true) { 
-      Write-EventLog -LogName DevOps -Source $logSource -EntryType Information -EventId 1000 -Message "Set-TargetResource: Server is Rackconnect v2"
+      if($Logging) {
+         Write-EventLog -LogName DevOps -Source $logSource -EntryType Information -EventId 1000 -Message "Set-TargetResource: Server is Rackconnect v2"
+      }
       if($InterfaceDescription = "Citrix PV Network Adapter #0") {
          $nicName = "Unused"
-         Write-EventLog -LogName DevOps -Source $logSource -EntryType Information -EventId 1000 -Message "ReNaming $InterfaceDescription with name $nicName and setting to disabled"
+         if($Logging) {
+            Write-EventLog -LogName DevOps -Source $logSource -EntryType Information -EventId 1000 -Message "ReNaming $InterfaceDescription with name $nicName and setting to disabled"
+         }
          Get-NetAdapter | ? InterfaceDescription -eq $InterfaceDescription | Rename-NetAdapter -NewName $nicName
          Disable-NetAdapter -Name $nicName 
       }
       if($InterfaceDescription = "Citrix PV Network Adapter #1") {
          $nicName = "Private" 
-         Write-EventLog -LogName DevOps -Source $logSource -EntryType Information -EventId 1000 -Message "ReNaming $InterfaceDescription with name $nicName"
+         if($Logging) {
+            Write-EventLog -LogName DevOps -Source $logSource -EntryType Information -EventId 1000 -Message "ReNaming $InterfaceDescription with name $nicName"
+         }
          Get-NetAdapter | ? InterfaceDescription -eq $InterfaceDescription | Rename-NetAdapter -NewName $nicName
       }
    } 
    else { 
-      Write-EventLog -LogName DevOps -Source $logSource -EntryType Information -EventId 1000 -Message "ReNaming $InterfaceDescription with name $Name"
+      if($Logging) {
+         Write-EventLog -LogName DevOps -Source $logSource -EntryType Information -EventId 1000 -Message "ReNaming $InterfaceDescription with name $Name"
+      }
       Get-NetAdapter | ? InterfaceDescription -eq $InterfaceDescription | Rename-NetAdapter -NewName $Name
    } 
 }
