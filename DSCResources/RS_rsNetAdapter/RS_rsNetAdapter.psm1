@@ -20,7 +20,6 @@ Function Test-TargetResource {
       [string]$Name,
       [bool]$Logging
    )
-   . "C:\cloud-automation\secrets.ps1"
    $logSource = $PSCmdlet.MyInvocation.MyCommand.ModuleName
    New-EventLog -LogName "DevOps" -Source $logSource -ErrorAction SilentlyContinue
    $base = gwmi -n root\wmi -cl CitrixXenStoreBase
@@ -73,7 +72,6 @@ Function Set-TargetResource {
       [string]$Name,
       [bool]$Logging
    )
-   . "C:\cloud-automation\secrets.ps1"
    $logSource = $PSCmdlet.MyInvocation.MyCommand.ModuleName
    New-EventLog -LogName "DevOps" -Source $logSource -ErrorAction SilentlyContinue
    $base = gwmi -n root\wmi -cl CitrixXenStoreBase
