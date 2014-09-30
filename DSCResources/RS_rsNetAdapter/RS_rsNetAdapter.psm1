@@ -27,8 +27,8 @@ Function Test-TargetResource {
    $session = gwmi -n root\wmi -q "select * from CitrixXenStoreSession where SessionId=$($sid.SessionId)"
    $region = $session.GetValue("vm-data/provider_data/region").value -replace "`"", ""
    try {
-      $isRackconnected = (Invoke-RestMethod -Uri $(("https://", $region -join ''), ".api.rackconnect.rackspace.com/v1/automation_status?format=text" -join '') -Method Get)
-      if($isRackconnected -gt 0) {
+      $Rackconnected = (Invoke-RestMethod -Uri $(("https://", $region -join ''), ".api.rackconnect.rackspace.com/v1/automation_status?format=text" -join '') -Method Get)
+      if($Rackconnected.count -gt 0) {
          $isRackconnected = $true
       }
       else {
@@ -79,8 +79,8 @@ Function Set-TargetResource {
    $session = gwmi -n root\wmi -q "select * from CitrixXenStoreSession where SessionId=$($sid.SessionId)"
    $region = $session.GetValue("vm-data/provider_data/region").value -replace "`"", ""
    try {
-      $isRackconnected = (Invoke-RestMethod -Uri $(("https://", $region -join ''), ".api.rackconnect.rackspace.com/v1/automation_status?format=text" -join '') -Method Get)
-      if($isRackconnected -gt 0) {
+      $Rackconnected = (Invoke-RestMethod -Uri $(("https://", $region -join ''), ".api.rackconnect.rackspace.com/v1/automation_status?format=text" -join '') -Method Get)
+      if($Rackconnected.count -gt 0) {
          $isRackconnected = $true
       }
       else {
