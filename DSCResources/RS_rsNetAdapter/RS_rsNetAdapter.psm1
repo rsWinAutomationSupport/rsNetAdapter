@@ -38,7 +38,7 @@ Function Test-TargetResource {
    catch {
       $isRackconnected = $false
    }
-   if($isRackconnected = $true) { 
+   if($isRackconnected -eq $true) { 
       if($Logging) {
          Write-EventLog -LogName DevOps -Source $logSource -EntryType Information -EventId 1000 -Message "Test-TargetResource: Server is Rackconnect v2"
       }
@@ -90,7 +90,7 @@ Function Set-TargetResource {
    catch {
       $isRackconnected = $false
    }
-   if($isRackconnected = $true) { 
+   if($isRackconnected -eq $true) { 
       if($Logging) {
          Write-EventLog -LogName DevOps -Source $logSource -EntryType Information -EventId 1000 -Message "Set-TargetResource: Server is Rackconnect v2"
       }
