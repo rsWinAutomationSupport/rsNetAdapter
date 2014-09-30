@@ -94,7 +94,7 @@ Function Set-TargetResource {
       if($Logging) {
          Write-EventLog -LogName DevOps -Source $logSource -EntryType Information -EventId 1000 -Message "Set-TargetResource: Server is Rackconnect v2"
       }
-      if($InterfaceDescription = "Citrix PV Network Adapter #0") {
+      if($InterfaceDescription -eq "Citrix PV Network Adapter #0") {
          $nicName = "Unused"
          if($Logging) {
             Write-EventLog -LogName DevOps -Source $logSource -EntryType Information -EventId 1000 -Message "ReNaming $InterfaceDescription with name $nicName and setting to disabled"
@@ -102,7 +102,7 @@ Function Set-TargetResource {
          Get-NetAdapter | ? InterfaceDescription -eq $InterfaceDescription | Rename-NetAdapter -NewName $nicName
          Disable-NetAdapter -Name $nicName 
       }
-      if($InterfaceDescription = "Citrix PV Network Adapter #1") {
+      if($InterfaceDescription -eq "Citrix PV Network Adapter #1") {
          $nicName = "Private" 
          if($Logging) {
             Write-EventLog -LogName DevOps -Source $logSource -EntryType Information -EventId 1000 -Message "ReNaming $InterfaceDescription with name $nicName"
