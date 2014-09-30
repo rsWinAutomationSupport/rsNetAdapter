@@ -42,10 +42,10 @@ Function Test-TargetResource {
       if($Logging) {
          Write-EventLog -LogName DevOps -Source $logSource -EntryType Information -EventId 1000 -Message "Test-TargetResource: Server is Rackconnect v2"
       }
-      if($InterfaceDescription = "Citrix PV Network Adapter #0") {
+      if($InterfaceDescription -eq "Citrix PV Network Adapter #0") {
          $nicName = "Unused" 
       }
-      if($InterfaceDescription = "Citrix PV Network Adapter #1") {
+      if($InterfaceDescription -eq "Citrix PV Network Adapter #1") {
          $nicName = "Private" 
       }
    } 
