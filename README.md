@@ -11,7 +11,7 @@ rsNetAdapterBindings - Toggle NIC protocol bindings (ipv6, client for ms network
 Usage examples:
 
 rsNetAdapter
-<pre>
+```Posh
 	rsNetAdapter SetDefaultNic0
 	{
 		InterfaceDescription = "Citrix PV Network Adapter #0"
@@ -23,10 +23,10 @@ rsNetAdapter
 		InterfaceDescription = "Citrix PV Network Adapter #1"
 		Name = "Private"
 	}	
-</pre>
+```
 
 rsNetAdapterBindings
-<pre>
+```Posh
 	rsNetAdapterBindings msclient_priv
 	{
 		Name = "Client for MS Networks - Priv NIC"
@@ -34,4 +34,4 @@ rsNetAdapterBindings
 		ComponentID = "ms_msclient"
 		Ensure = "Present"
 	}
-</pre>
+```
