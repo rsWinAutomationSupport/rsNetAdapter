@@ -20,6 +20,7 @@ Function Test-TargetResource {
       [string]$Name,
       [bool]$Logging
    )
+   Import-Module rsCommon
    New-rsEventLogSource -logSource rsNetAdapter
    $region = Get-rsRegion -Value $env:COMPUTERNAME
    if(!(Test-rsCloud)) {
@@ -71,6 +72,7 @@ Function Set-TargetResource {
       [string]$Name,
       [bool]$Logging
    )
+   Import-Module rsCommon
    $region = Get-rsRegion -Value $env:COMPUTERNAME
    try {
       $Rackconnected = (Invoke-RestMethod -Uri $(("https://", $region -join ''), ".api.rackconnect.rackspace.com/v1/automation_status?format=text" -join '') -Method Get)
