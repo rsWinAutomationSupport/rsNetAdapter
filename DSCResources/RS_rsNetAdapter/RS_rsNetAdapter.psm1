@@ -20,12 +20,12 @@ Function Test-TargetResource {
       [string]$Name,
       [bool]$Logging
    )
-   $logSource = $PSCmdlet.MyInvocation.MyCommand.ModuleName
-   New-EventLog -LogName "DevOps" -Source $logSource -ErrorAction SilentlyContinue
-   $base = gwmi -n root\wmi -cl CitrixXenStoreBase
-   $sid = $base.AddSession("MyNewSession")
-   $session = gwmi -n root\wmi -q "select * from CitrixXenStoreSession where SessionId=$($sid.SessionId)"
-   $region = $session.GetValue("vm-data/provider_data/region").value -replace "`"", ""
+   Import-Module rsCommon
+   New-rsEventLogSource -logSource rsNetAdapter
+   $region = Get-rsRegion -Value $env:COMPUTERNAME
+   if(!(Test-rsCloud)) {
+      return $true
+   }
    try {
       $Rackconnected = (Invoke-RestMethod -Uri $(("https://", $region -join ''), ".api.rackconnect.rackspace.com/v1/automation_status?format=text" -join '') -Method Get)
       if($Rackconnected.count -gt 0) {
@@ -72,12 +72,8 @@ Function Set-TargetResource {
       [string]$Name,
       [bool]$Logging
    )
-   $logSource = $PSCmdlet.MyInvocation.MyCommand.ModuleName
-   New-EventLog -LogName "DevOps" -Source $logSource -ErrorAction SilentlyContinue
-   $base = gwmi -n root\wmi -cl CitrixXenStoreBase
-   $sid = $base.AddSession("MyNewSession")
-   $session = gwmi -n root\wmi -q "select * from CitrixXenStoreSession where SessionId=$($sid.SessionId)"
-   $region = $session.GetValue("vm-data/provider_data/region").value -replace "`"", ""
+   Import-Module rsCommon
+   $region = Get-rsRegion -Value $env:COMPUTERNAME
    try {
       $Rackconnected = (Invoke-RestMethod -Uri $(("https://", $region -join ''), ".api.rackconnect.rackspace.com/v1/automation_status?format=text" -join '') -Method Get)
       if($Rackconnected.count -gt 0) {
